@@ -11,6 +11,8 @@ The following describes how data for the analysis was collected, processed, and 
 #########################
 Part 1: Scrape Data from EPA
 #########################
+Collect data from EPA for hazardous air particles (HAPS), AQI, and ozone from 1980-2021.
+
 Code:
 bash AQI_dwnld_epa_data.sh [path]
 bash ozone_dwnld_epa_data.sh [path]
@@ -56,3 +58,5 @@ WiDS_aqi_',year,'.csv
 Part 3: Generate merged Ozone and AQI Dataframes for 1980 - 2021
 #######################################################
 
+Code:
+Bash generate_finaldf_1980_2021_aqi_oz.sh [list of years]
