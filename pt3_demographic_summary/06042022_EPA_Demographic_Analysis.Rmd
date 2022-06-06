@@ -1,0 +1,173 @@
+---
+title: "06042022_Demographic_Report_2019_2020"
+author: "Lesley Chapman"
+date: "6/4/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(data.table)
+library(tidyverse)
+```
+
+
+```{r}
+df_2019 = fread('/Volumes/Lesley_Chapman/WiDS/2022/EPA/data/WiDS_Datathon/Datathon_EPA_Air_Quality_Demographics_Meteorology_2019.csv')
+df_2020 = fread('/Volumes/Lesley_Chapman/WiDS/2022/EPA/data/WiDS_Datathon/Datathon_EPA_Air_Quality_Demographics_Meteorology_2020.csv')
+head(df_2020,3)
+```
+
+
+```{r}
+colnames(df_2020)
+```
+
+People of color
+
+Highest
+```{r}
+df_2019 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(PEOPLE_OF_COLOR_FRACTION), list(avg = mean)) %>%
+  arrange(desc(avg))
+```
+
+```{r}
+df_2020 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(PEOPLE_OF_COLOR_FRACTION), list(avg = mean)) %>%
+  arrange(desc(avg))
+```
+
+Lowest
+```{r}
+df_2019 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(PEOPLE_OF_COLOR_FRACTION), list(avg = mean)) %>%
+  arrange(avg)
+```
+
+```{r}
+df_2020 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(PEOPLE_OF_COLOR_FRACTION), list(avg = mean)) %>%
+  arrange(avg)
+```
+
+Linguistically Isolated
+
+Highest
+```{r}
+df_2019 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LINGUISTICALLY_ISOLATED_FRACTION), list(avg = mean)) %>%
+  arrange(desc(avg))
+```
+
+
+```{r}
+df_2020 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LINGUISTICALLY_ISOLATED_FRACTION), list(avg = mean)) %>%
+  arrange(desc(avg))
+```
+
+
+Lowest
+```{r}
+df_2019 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LINGUISTICALLY_ISOLATED_FRACTION), list(avg = mean)) %>%
+  arrange(avg)
+```
+
+
+```{r}
+df_2020 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LINGUISTICALLY_ISOLATED_FRACTION), list(avg = mean)) %>%
+  arrange(avg)
+```
+
+
+
+LESS_THAN_HS_ED_FRACTION
+
+Highest
+```{r}
+df_2019 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LESS_THAN_HS_ED_FRACTION), list(avg = mean)) %>%
+  arrange(desc(avg))
+```
+
+
+
+```{r}
+df_2020 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LESS_THAN_HS_ED_FRACTION), list(avg = mean)) %>%
+  arrange(desc(avg))
+```
+
+Lowest
+```{r}
+df_2019 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LESS_THAN_HS_ED_FRACTION), list(avg = mean)) %>%
+  arrange(avg)
+```
+
+
+
+```{r}
+df_2020 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LESS_THAN_HS_ED_FRACTION), list(avg = mean)) %>%
+  arrange(avg)
+```
+
+
+
+LOW_INCOME_FRACTION
+
+Highest
+
+```{r}
+df_2019 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LOW_INCOME_FRACTION), list(avg = mean)) %>%
+  arrange(desc(avg))
+```
+
+```{r}
+df_2020 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LOW_INCOME_FRACTION), list(avg = mean)) %>%
+  arrange(desc(avg))
+```
+
+
+
+Lowest
+
+```{r}
+df_2019 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LOW_INCOME_FRACTION), list(avg = mean)) %>%
+  arrange(avg)
+```
+
+```{r}
+df_2020 %>%
+  group_by(STATE) %>%
+  summarise_at(vars(LOW_INCOME_FRACTION), list(avg = mean)) %>%
+  arrange(avg)
+```
+
+
+
+
+
+
+

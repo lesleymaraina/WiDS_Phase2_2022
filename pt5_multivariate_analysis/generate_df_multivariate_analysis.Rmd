@@ -1,0 +1,92 @@
+---
+title: "R Notebook"
+output: html_notebook
+description: code to generate HAPS dataframes for each year and each state respectively. the dataframe consists of columns containing each unique HAP value ('~40'). each row represents each CSBA as well as samples taken over the course of 1 year.
+---
+
+
+
+
+[source](https://stackoverflow.com/questions/66939945/how-to-transform-row-values-into-columns-while-grouping-by-another-variable-in-r)
+
+
+```{r}
+library(tidyverse)
+library(data.table)
+options(echo=TRUE)
+
+args <- commandArgs(trailingOnly = TRUE)
+year <- args[1]
+```
+
+
+```{r}
+file <- paste0('[path]/WiDS_ozone_', year, '.tsv')
+df = fread(file)
+df = fread("[path]/WiDS_ozone_2019.tsv")
+head(df,3)
+```
+
+
+```{r}
+#Create column with unique index
+df <- tibble::rowid_to_column(df, "index")
+head(df)
+```
+
+
+```{r}
+# Store location and ozone columns
+df_col <- df %>% select(c(index,STATE,DATE,CBSA,Max_Value_Ozone))
+```
+
+
+```{r}
+# Generate dataframe where each column lists HAPS data 
+df2 <- df %>% select(index,Parameter_Name_HAPS, Max_Value_HAPS) %>%
+  pivot_wider(id_cols = index,
+              names_from = Parameter_Name_HAPS,
+              values_from = Max_Value_HAPS) %>% 
+  replace(is.na(.), 0)
+```
+
+```{r}
+# Add location and ozone data back to the original dataframe
+df3 <- df_col %>% inner_join(df2, by = "index")
+```
+
+```{r}
+df3 %>%
+    group_split(STATE) %>%
+   setNames(unique(df3$STATE))
+```
+
+Save dataframe for each state
+```{r}
+year = '2019'
+df3 %>%
+  mutate(STATE = str_replace(STATE, " ", "_")) %>%
+  split(.$STATE) %>%
+  imap(~write.table(.x, paste0("[path]/ozone_multivariate_analysis/",.y, '_', year, '.tsv'), row.names = FALSE, quote=FALSE, sep = '\t'))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

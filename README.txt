@@ -5,6 +5,8 @@ Data Source:
 EPA: Pre-Generated Data Files
 https://aqs.epa.gov/aqsweb/airdata/download_files.html
 
+WiDS Track 1 Data EPA
+
 
 The following describes how data for the analysis was collected, processed, and merged into final dataframes for downstream analysis.
 
@@ -48,15 +50,62 @@ WiDS_ozone_rows
 Output:
 Dataframe 1: WiDS Ozone Dataframe for each year [1980-2021]
 Select data (i.e.: LATITUDE,	LONGITUDE,Parameter_Name_HAPS, etc) for each year for CSBA sites represented in the WiDS 2019-2020 dataframes
-WiDS_ozone_',year,'.csv
+WiDS_ozone_',year,'.tsv
 
 Dataframe 2: WiDS AQI Dataframe for each year [1980-2021]
 Select data (i.e.: LATITUDE,	LONGITUDE,Parameter_Name_HAPS, etc) for each year for CSBA sites represented in the WiDS 2019-2020 dataframes
-WiDS_aqi_',year,'.csv
+WiDS_aqi_',year,'.tsv
 
-#######################################################
-Part 3: Generate merged Ozone and AQI Dataframes for 1980 - 2021
-#######################################################
+Generate merged Ozone and AQI Dataframes for 1980 - 2021
 
 Code:
 Bash generate_finaldf_1980_2021_aqi_oz.sh [list of years]
+
+Input:
+WiDS_ozone_',year,'.tsv
+WiDS_aqi_',year,'.tsv
+
+Output:
+Full dataframe: WiDS_aqi_1980_2021.tsv
+Select columns: WiDS_aqi_1980_2021_df.tsv
+
+
+Full dataframe: WiDS_ozone_1980_2021.tsv
+Select columns: WiDS_ozone_1980_2021_df.tsv
+
+###############################################################################
+Part 3: Plot summary of demographic data across the United States
+###############################################################################
+Generate plots summarizing social demographics across the United States (i.e.: people of color fraction) for 2019 and 2020
+
+###############################################################################
+Part 4: Evaluate association of each hazardous air particle (HAP) with ozone and AQI respectively
+###############################################################################
+
+Code:
+Evaluate_HAPS.R
+
+
+###############################################################################
+Part 5: Generate dataframes for HAPS multivariate analysis
+###############################################################################
+Part A: Generate dataframes for each state for each year from 1980-2021* that has columns representing each respective HAP
+* Note: some states do not have data for all years from 1980-2021
+
+Code: 
+bash generate_df_multivariate_analysis.sh years.txt
+
+Runs generate_df_multivariate_analysis.R
+years.txt: text file listing years 1980-2021
+
+Output:
+Dataframe with representing each state for each year from 1990-2021.  Dataframe has columns representing each HAP value, and each row represents a daily measurement throughout the course of the year for each CSBA site
+
+Part B:
+Merge dataframes for each state across all years represented for the state.
+
+Code:
+bash merge_files.sh Alabama
+bash merge_files.sh Arizona
+bash merge_files.sh Arkansas
+[repeat for each state]

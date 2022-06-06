@@ -1,0 +1,122 @@
+---
+title: "Demographic_map"
+author: "Lesley Chapman Hannah"
+date: "6/5/2022"
+output: pdf_document
+---
+
+TODO
+> run this as an R script and save images using 'Viewer' on the right tab
+> Run with HS_ED, lingquistically_isolated, etc.
+> Run with 2020
+> Get multivariate dfs for AQI
+> put multivariate dfs in NMF (python --> poster code)
+> put in bayes
+
+**References**
+
+[Rcode in colab](https://stackoverflow.com/questions/54595285/how-to-use-r-with-google-colaboratory)
+
+[Map Coordinates](https://www.census.gov/geographies/mapping-files/2013/geo/carto-boundary-file.html)
+
+[Map code source](https://cfss.uchicago.edu/notes/vector-maps/#fn:Plus-the-Distric)
+
+[Merge real data with map data](https://youtu.be/ukRCrWvRoSA?t=475)
+
+[add data to map](https://youtu.be/8R9NuHmlWzE?t=208)
+
+```{r}
+#install.packages("leaflet")
+#install.packages('rgdal')
+library(data.table)
+library(leaflet)
+library(rgdal)
+
+```
+
+
+
+
+```{r}
+#sf_roads2 <- read_sf('cb_2013_us_state_20m.shp')
+#usa <- here(dsn= 'cb_2013_us_state_20m.shp') %>%
+#  st_read()
+
+temp_shapefile2 <- tempfile()
+download.file("https://www2.census.gov/geo/tiger/GENZ2013/cb_2013_us_state_20m.zip", temp_shapefile2)
+unzip(temp_shapefile2)
+
+usa <-readOGR(dsn='cb_2013_us_state_20m.shp')
+```
+
+
+```{r}
+df_wids <- fread('/Volumes/Lesley_Chapman/WiDS/2022/EPA/data/WiDS_Datathon/Datathon_EPA_Air_Quality_Demographics_Meteorology_2019.csv')
+head(df_wids)
+```
+
+
+```{r}
+is.element(df_wids$STATE, usa$NAME)
+```
+
+
+
+```{r}
+wids_us <- df_wids %>%
+group_by(STATE) %>%
+summarize(avg = mean(PEOPLE_OF_COLOR_FRACTION)) %>% arrange(desc(avg))
+
+head(wids_us)
+```
+
+
+Remove states from shape file not in wids dataset
+
+
+```{r}
+usa <- subset(usa, is.element(usa$NAME, wids_us$STATE))
+```
+
+Match order of states in shape file and WiDS file
+
+```{r}
+usa <- usa[order(match(usa$NAME, wids_us$STATE)),]
+
+```
+
+
+```{r}
+bins <- c(0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+#pal <- colorBin("RdYlBu", domain=wids_us$avg, bins = bins, reverse = TRUE)
+pal <- colorNumeric(c("blue","light blue","grey"),domain=wids_us$avg, reverse = TRUE)
+```
+
+
+```{r}
+labels <- paste("<p>", usa$NAME, "</p>",
+                "<p>", "Rate", round(wids_us$avg, digits = 1), "</p>", sep="")
+m <- leaflet() %>%
+setView(-96, 37.8, 4) %>%
+addProviderTiles(providers$Stamen.TonerLite) %>%
+addPolygons(data = usa,
+weight =1,
+smoothFactor = 0.5,
+color = "white",
+fillOpacity = 0.8, 
+fillColor = pal(wids_us$avg)) %>%
+  addLegend(pal = pal, values = wids_us$avg, position= "bottomleft")
+m
+
+
+```
+
+
+
+
+
+
+
+
+
+
