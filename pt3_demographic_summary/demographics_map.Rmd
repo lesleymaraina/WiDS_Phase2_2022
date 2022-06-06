@@ -51,7 +51,7 @@ usa <-readOGR(dsn='cb_2013_us_state_20m.shp')
 
 
 ```{r}
-df_wids <- fread('/Volumes/Lesley_Chapman/WiDS/2022/EPA/data/WiDS_Datathon/Datathon_EPA_Air_Quality_Demographics_Meteorology_2019.csv')
+df_wids <- fread('[path]/Datathon_EPA_Air_Quality_Demographics_Meteorology_2019.csv')
 head(df_wids)
 ```
 

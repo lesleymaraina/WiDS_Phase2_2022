@@ -12,8 +12,8 @@ library(tidyverse)
 
 
 ```{r}
-df_2019 = fread('/Volumes/Lesley_Chapman/WiDS/2022/EPA/data/WiDS_Datathon/Datathon_EPA_Air_Quality_Demographics_Meteorology_2019.csv')
-df_2020 = fread('/Volumes/Lesley_Chapman/WiDS/2022/EPA/data/WiDS_Datathon/Datathon_EPA_Air_Quality_Demographics_Meteorology_2020.csv')
+df_2019 = fread('[path]/Datathon_EPA_Air_Quality_Demographics_Meteorology_2019.csv')
+df_2020 = fread('[path]/Datathon_EPA_Air_Quality_Demographics_Meteorology_2020.csv')
 head(df_2020,3)
 ```
 
