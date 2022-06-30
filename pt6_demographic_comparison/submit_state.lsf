@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#BSUB -J state_bayesian_analysis 
+#BSUB -q normal
+#BSUB -o %J_output.txt
+#BSUB -e %J_error.txt
+#BSUB -N
+#BSUB -u [email]
+#BSUB -B
+
+source [path]
+conda activate [path]/pymc3_env_test1
+python bayesian_analysis.py Wyoming_multivar.tsv Wyoming
+conda deactivate
+
